@@ -3,9 +3,16 @@
 #include <QCompleter>
 #include <QKeyEvent>
 #include <QScrollBar>
+#include <QtGui>
 
-TextEditor::TextEditor(QCompleter *c, QWidget *parent) : QTextEdit(parent), comp(c)
+TextEditor::TextEditor(QWidget *parent) : QTextEdit(parent)
 {
+    comp = new QCompleter(this);
+    comp->setModel(modelForCompleter());
+    comp->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+    comp->setCaseSensitivity(Qt::CaseInsensitive);
+    comp->setWrapAround(false);
+
     comp->setWidget(this);
     comp->setCompletionMode(QCompleter::PopupCompletion);
     comp->setCaseSensitivity(Qt::CaseInsensitive);
@@ -71,6 +78,20 @@ void TextEditor::keyPressEvent(QKeyEvent *e)
     }
 
     QRect cr = cursorRect();
-    cr.setWidth(comp->popup()->sizeHintForColumn(0) + comp->popup()->verticalScrollBar()->sizeHint().width());
+    cr.setWidth(comp->popup()->sizeHintForColumn(0)
+                + comp->popup()->verticalScrollBar()->sizeHint().width());
     comp->complete(cr); // выталкиваем его вверх!
+}
+
+QAbstractItemModel *TextEditor::modelForCompleter()
+{
+    QStringList words;
+
+    words << "booking"
+          << "booking123"
+          << "fullpath"
+          << "fullpath456"
+          << "widget"
+          << "string";
+    return new QStringListModel(words, comp);
 }

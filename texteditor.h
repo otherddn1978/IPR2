@@ -3,6 +3,7 @@
 
 #include <QTextEdit>
 
+class QAbstractItemModel;
 class QCompleter;
 
 class TextEditor : public QTextEdit
@@ -10,7 +11,7 @@ class TextEditor : public QTextEdit
     Q_OBJECT
 
 public:
-    TextEditor(QCompleter *c, QWidget *parent = 0);
+    TextEditor(QWidget *parent = 0);
     ~TextEditor();
 
     QCompleter *completer() const;
@@ -21,6 +22,7 @@ protected:
 
 private slots:
     void insertCompletion(const QString &completion);
+    QAbstractItemModel *modelForCompleter();
 
 private:
     QCompleter *comp;

@@ -3,8 +3,6 @@
 
 #include <QMainWindow>
 
-class QAbstractItemModel;
-class QCompleter;
 class TextEditor;
 
 class MainWindow : public QMainWindow
@@ -20,9 +18,7 @@ private slots:
 
 private:
     void createMenu();
-    QAbstractItemModel *modelForCompleter();
 
-    QCompleter *completer;
     TextEditor *textEditor;
 };
 
